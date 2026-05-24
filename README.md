@@ -43,10 +43,13 @@ spicetify apply
 ```json
 {
   "tracks": {
-    "SPOTIFY_TRACK_ID": "https://raw.githubusercontent.com/vvertax/AntiCensor/main/tracks/FILENAME"
+    "SPOTIFY_TRACK_ID": "https://raw.githubusercontent.com/vvertax/AntiCensor/main/tracks/FILENAME",
+    "ID1,ID2,ID3": "https://raw.githubusercontent.com/vvertax/AntiCensor/main/tracks/FILENAME"
   }
 }
 ```
+
+Несколько ID через запятую — для случаев когда одна и та же песня выходила под разными Spotify ID.
 
 Spotify Track ID можно найти в ссылке на трек: `open.spotify.com/track/`**`TRACK_ID`**
 

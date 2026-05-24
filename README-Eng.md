@@ -43,10 +43,13 @@ The database is stored in [`db.json`](db.json) in this repository. Audio files a
 ```json
 {
   "tracks": {
-    "SPOTIFY_TRACK_ID": "https://raw.githubusercontent.com/vvertax/AntiCensor/main/tracks/FILENAME"
+    "SPOTIFY_TRACK_ID": "https://raw.githubusercontent.com/vvertax/AntiCensor/main/tracks/FILENAME",
+    "ID1,ID2,ID3": "https://raw.githubusercontent.com/vvertax/AntiCensor/main/tracks/FILENAME"
   }
 }
 ```
+
+Multiple IDs separated by commas — for tracks that were released under different Spotify IDs.
 
 The Spotify Track ID can be found in the track URL: `open.spotify.com/track/`**`TRACK_ID`**
 
