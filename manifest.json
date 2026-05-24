@@ -1,0 +1,19 @@
+[
+  {
+    "name": "AntiCensor",
+    "description": "Automatically replaces censored tracks with uncensored versions from a remote database.",
+    "preview": "./preview.png",
+    "main": "./dist/****Сensor.js",
+    "readme": "README.md",
+    "authors": [
+      { "name": "vvertax", "url": "https://github.com/vvertax" }
+    ],
+    "tags": [
+      "utility",
+      "audio",
+      "enhancement",
+      "russian",
+      "anticensorship"
+    ]
+  }
+]
