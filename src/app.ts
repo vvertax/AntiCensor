@@ -106,12 +106,22 @@ function removeReplacement(trackId: string): void {
 
 function getReplacementUrl(trackId: string, db: Database): string | undefined {
   if (getBlacklist().has(trackId)) return undefined;
-  return getOverrides()[trackId] ?? db.tracks[trackId];
+  return getOverrides()[trackId] ?? dbLookup(trackId, db);
 }
 
 // Returns URL regardless of blacklist — for pre-filling the edit dialog
 function getRawUrl(trackId: string, db: Database): string | undefined {
-  return getOverrides()[trackId] ?? db.tracks[trackId];
+  return getOverrides()[trackId] ?? dbLookup(trackId, db);
+}
+
+function dbLookup(trackId: string, db: Database): string | undefined {
+  if (db.tracks[trackId]) return db.tracks[trackId];
+  for (const key of Object.keys(db.tracks)) {
+    if (key.split(",").some((id) => id.trim() === trackId)) {
+      return db.tracks[key];
+    }
+  }
+  return undefined;
 }
 
 // --- Track ID extraction ---
@@ -297,7 +307,6 @@ function replaceAudio(url: string): void {
     ourAudio.load();
   }
 
-  // Periodic drift correction (every 2s, tolerance ±0.4s)
   const syncInterval = setInterval(() => {
     if (!ourAudio || !replacementPlaying) {
       clearInterval(syncInterval);
@@ -305,11 +314,18 @@ function replaceAudio(url: string): void {
     }
     if (!Spicetify.Player.isPlaying()) return;
     const expected = Spicetify.Player.getProgress() / 1000;
-    const diff = Math.abs(ourAudio.currentTime - expected);
-    if (diff > 0.4) {
+    const diff = ourAudio.currentTime - expected;
+    const absDiff = Math.abs(diff);
+    if (absDiff > 0.5) {
       ourAudio.currentTime = expected;
+      ourAudio.playbackRate = 1;
+    } else if (absDiff > 0.1) {
+      // Nudge rate to close the gap gradually (±5%)
+      ourAudio.playbackRate = diff > 0 ? 0.95 : 1.05;
+    } else {
+      ourAudio.playbackRate = 1;
     }
-  }, 2000);
+  }, 500);
 
   const onEnded = () => {
     replacementPlaying = false;
