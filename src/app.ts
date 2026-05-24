@@ -28,7 +28,7 @@ const t = navigator.language.toLowerCase().startsWith("ru") ? ru : en;
 
 const DB_URL =
   "https://raw.githubusercontent.com/vvertax/AntiCensor/main/db.json";
-const CACHE_KEY = "****censor_db_cache";
+const CACHE_KEY = "anticensor_db_cache";
 const CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 
 interface Database {
@@ -59,7 +59,7 @@ async function loadDatabase(): Promise<Database> {
     return data;
   } catch (e) {
     if (raw) {
-      console.warn("[****Censor] fetch failed, using stale cache:", e);
+      console.warn("[AntiCensor] fetch failed, using stale cache:", e);
       return (JSON.parse(raw) as CacheEntry).data;
     }
     throw e;
@@ -68,8 +68,8 @@ async function loadDatabase(): Promise<Database> {
 
 // --- LocalOverrides & Blacklist ---
 
-const OVERRIDES_KEY = "****censor_overrides";
-const BLACKLIST_KEY = "****censor_blacklist";
+const OVERRIDES_KEY = "anticensor_overrides";
+const BLACKLIST_KEY = "anticensor_blacklist";
 
 function getOverrides(): Record<string, string> {
   const raw = localStorage.getItem(OVERRIDES_KEY);
@@ -286,7 +286,7 @@ function replaceAudio(url: string): void {
     // Unpause Spotify's UI so controls stay in sync
     if (!Spicetify.Player.isPlaying()) Spicetify.Player.play();
     ourAudio.play().catch((e: unknown) =>
-      console.warn("[****Censor] play() failed:", e)
+      console.warn("[AntiCensor] play() failed:", e)
     );
   };
 
@@ -356,7 +356,7 @@ function makeSongChangeHandler(db: Database) {
           replaceAudio(url);
           Spicetify.showNotification(t.replaced);
         } catch (e) {
-          console.error("[****Censor] replaceAudio error:", e);
+          console.error("[AntiCensor] replaceAudio error:", e);
         }
       }
 
@@ -435,7 +435,7 @@ async function main(): Promise<void> {
   try {
     db = await loadDatabase();
   } catch (e) {
-    console.error("[****Censor] failed to load database:", e);
+    console.error("[AntiCensor] failed to load database:", e);
     Spicetify.showNotification(t.dbError);
     return;
   }
