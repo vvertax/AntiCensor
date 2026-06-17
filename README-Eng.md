@@ -2,7 +2,8 @@
 
 A [Spicetify](https://spicetify.app) extension that automatically replaces censored tracks with uncensored versions.
 
-![preview](preview.gif)
+> [!CAUTION]
+> **Development discontinued.**
 
 ## How it works
 
